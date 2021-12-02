@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-import ThankYou from './components/ThankYou';
+import Login from './components/Login';
 import reportWebVitals from './reportWebVitals';
 
 import "uikit/dist/css/uikit.min.css";
@@ -16,7 +16,7 @@ UIkit.use(Icons);
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThankYou />
+    <Login />
   </React.StrictMode>,
   document.getElementById('root')
 );

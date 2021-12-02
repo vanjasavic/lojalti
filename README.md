@@ -1,4 +1,4 @@
 # Lojalti
 
 
-Frontend završeno: login, register, home (70%), order, thank you
+Frontend završeno: login, register, home (80%), order, thank you
