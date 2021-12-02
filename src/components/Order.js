@@ -29,7 +29,7 @@ export default function Order() {
 
                     </div>
 
-                    <button className="uk-button uk-button-secondary uk-align-center uk-border-rounded uk-width-1-1 uk-margin-medium-top">Dodaj u naruđbu</button>
+                    <button className="uk-button uk-button-secondary uk-align-center uk-border-rounded uk-width-1-1 uk-margin-medium-top">Dodaj u narudžbu</button>
 
                 </div>   
 
