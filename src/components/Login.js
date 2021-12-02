@@ -21,9 +21,7 @@ export default function Login() {
                     </div>
                 </div>
 
-                <a className="App-link" href="" target="_blank" rel="noopener noreferrer">
-                    <p className="uk-text-warning uk-text-right">Zaboravljena lozinka?</p>
-                </a>
+                <p className="uk-text-warning uk-text-right">Zaboravljena lozinka?</p>
 
                 <button className="uk-button uk-button-secondary uk-align-center uk-border-rounded uk-width-1-1">Prijava</button>
 
