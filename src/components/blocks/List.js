@@ -1,6 +1,19 @@
-import React from 'react'
+import React,{useEffect}from 'react'
+import { useAuth } from '../../contexts/AuthContext'
 
 export default function List() {
+
+    const {getItems,items} = useAuth();
+
+    /// uzmi iteme samo jednom kod prvog rendera
+    useEffect(() => {
+        const unsubscribe = getItems();
+    
+        return unsubscribe;
+    }, [])
+
+    //LOGIKA if (items == undefined ) ? prikazi loading : prikazi iteme; 
+
     return (
         <div className="uk-container uk-container-xsmall uk-margin-medium">
 

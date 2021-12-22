@@ -1,6 +1,6 @@
 import React, {useContext,useState,useEffect} from 'react'
 import { createUserWithEmailAndPassword,onAuthStateChanged } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc,collection, getDocs } from "firebase/firestore"; 
 import {auth,db} from '../firebase'
 
 
@@ -13,6 +13,7 @@ export function useAuth(){
 export function AuthProvider({children}) {
     
     const [currentUser,setCurrentUser] = useState()
+    const [items,setItems] = useState();
 
     async function addUser(email,name,surname){
 
@@ -44,6 +45,23 @@ export function AuthProvider({children}) {
         }
     }
 
+    //METODE ZA ITEME
+
+    async function getItems(){
+
+        const _items = [];
+        const querySnapshot = await getDocs(collection(db, "items"));
+        querySnapshot.forEach((doc) => {
+            _items.push(doc.data());
+            console.log(doc.id, " => ", doc.data());
+        });
+        //console.log("svi itemi "+_items);
+        setItems(_items);
+
+    }
+
+    /// 
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user)=> {
             setCurrentUser(user);
@@ -57,8 +75,9 @@ export function AuthProvider({children}) {
     const value = {
         currentUser,
         signUp,
-        addUser
-    }
+        addUser,
+        getItems,
+        items}
 
     return (      
         <AuthContext.Provider value={value}>
