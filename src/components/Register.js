@@ -12,11 +12,16 @@ export default function Register() {
     const repassword = useRef()
 
 
-    const {signUp,currentUser} = useAuth();
+    const {signUp,currentUser,addUser} = useAuth();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        signUp(email.current.value,password.current.value);
+
+        signUp(email.current.value,password.current.value).then((result) => {
+            console.log("signup -> "+result);
+            result ?
+            addUser(email.current.value,name.current.value,surname.current.value) : console.log("neuspjesno dodavanje usera");
+        });
 
     }
 
