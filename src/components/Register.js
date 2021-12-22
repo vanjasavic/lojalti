@@ -1,8 +1,25 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Welcome from './blocks/Welcome'
+import { useAuth } from '../contexts/AuthContext'
 
 
 export default function Register() {
+
+    const email = useRef()
+    const name= useRef()
+    const surname = useRef()
+    const password = useRef()
+    const repassword = useRef()
+
+
+    const {signUp,currentUser} = useAuth();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        signUp(email.current.value,password.current.value);
+
+    }
+
     return (
         <div className="uk-container uk-container-xsmall">
 
@@ -14,37 +31,39 @@ export default function Register() {
 
             <p className="uk-text-large uk-margin-medium-top">Registracija</p>
 
-            <form className="uk-margin-medium">
+            <form onSubmit={handleSubmit} className="uk-margin-medium">
 
                     <div className="uk-margin">
                         <div>
-                            <input placeholder="Email" className="uk-input uk-width-1-1" type="email" />
+                            <input placeholder="Email" ref={email}  className="uk-input uk-width-1-1" type="email" />
                         </div>
                     </div>
 
                     <div className="uk-margin">
                         <div>
-                            <input placeholder="Ime" className="uk-input uk-width-1-1" type="text" />
+                            <input placeholder="Ime"  ref={name} className="uk-input uk-width-1-1" type="text" />
                         </div>
                     </div>
 
                     <div className="uk-margin">
                         <div>
-                            <input placeholder="Prezime" className="uk-input uk-width-1-1" type="text" />
+                            <input placeholder="Prezime"  ref={surname}  className="uk-input uk-width-1-1" type="text" />
                         </div>
                     </div>
 
                     <div className="uk-margin">
                         <div>
-                            <input placeholder="Lozinka" className="uk-input" type="password" />
+                            <input placeholder="Lozinka" ref={password}  className="uk-input" type="password" />
                         </div>
                     </div>
 
                     <div className="uk-margin">
                         <div>
-                            <input placeholder="Ponovite lozinku" className="uk-input" type="password" />
+                            <input placeholder="Ponovite lozinku" ref={repassword}  className="uk-input" type="password" />
                         </div>
                     </div>
+
+                    
 
                     <button className="uk-button uk-button-secondary uk-align-center uk-border-rounded uk-width-1-1">Registriraj se</button>
 

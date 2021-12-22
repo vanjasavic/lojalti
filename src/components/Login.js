@@ -1,23 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Welcome from './blocks/Welcome'
 
 export default function Login() {
+
+    const [email,setEmail] = useState('');
+    const [password,setPassword] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log([email,password]);
+    }
+
     return (
         <div className="uk-container uk-container-xsmall uk-margin-xlarge-top">
 
         <Welcome />
 
-            <form className="uk-margin-large">
+            <form onSubmit={handleSubmit} className="uk-margin-large">
 
                 <div className="uk-margin">
                     <div>
-                        <input placeholder="Email" className="uk-input uk-width-1-1" type="email" />
+                        <input value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="Email" className="uk-input uk-width-1-1" type="email" />
                     </div>
                 </div>
 
                 <div className="uk-margin">
                     <div>
-                        <input placeholder="Lozinka" className="uk-input" type="password" />
+                        <input value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Lozinka" className="uk-input" type="password" />
                     </div>
                 </div>
 

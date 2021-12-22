@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-import Login from './components/Login';
+import Register from './components/Register';
 import reportWebVitals from './reportWebVitals';
 
 import "uikit/dist/css/uikit.min.css";
@@ -10,13 +10,17 @@ import "uikit/dist/js/uikit.min.js";
 
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
+import { AuthProvider } from './contexts/AuthContext';
 
 // loads the Icon plugin
 UIkit.use(Icons);
 
 ReactDOM.render(
   <React.StrictMode>
-    <Login />
+    <AuthProvider>  
+    < Register />
+    </AuthProvider>
+   
   </React.StrictMode>,
   document.getElementById('root')
 );
