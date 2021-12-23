@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-import Home from './components/Home';
+import Login from './components/Login';
 import reportWebVitals from './reportWebVitals';
 
 import "uikit/dist/css/uikit.min.css";
@@ -18,7 +18,7 @@ UIkit.use(Icons);
 ReactDOM.render(
   <React.StrictMode>
     <AuthProvider>  
-    < Home />
+    < Login />
     </AuthProvider>
    
   </React.StrictMode>,

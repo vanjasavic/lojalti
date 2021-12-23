@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import Welcome from './blocks/Welcome'
+import { useAuth } from '../contexts/AuthContext'
 
 export default function Login() {
 
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
 
+    const {login} = useAuth();
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        login(email,password);
         console.log([email,password]);
     }
 
