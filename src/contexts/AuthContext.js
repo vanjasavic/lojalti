@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, setDoc, collection, getDocs } from "firebase/firestore";
 import { auth, db } from '../firebase'
 
@@ -14,6 +14,7 @@ export function AuthProvider({ children }) {
 
     const [currentUser, setCurrentUser] = useState()
     const [items, setItems] = useState();
+    const provider = new GoogleAuthProvider();
 
     /// AUTH METODE//
 
@@ -34,21 +35,48 @@ export function AuthProvider({ children }) {
 
     //metoda za login putem emaila i passworda
 
-    async function login(email,password){
+    async function loginGoogle() {
+        await signInWithPopup(auth, provider)
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                const name = user.displayName.substring(0, user.displayName.indexOf(' '));
+                addUser(user.email,name,"GOOGLE");
+                // ...
+                console.log("google sign in uspjesno");
+                console.log(result);
+                console.log(user);
+            }).catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.email;
+                // The AuthCredential type that was used.
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                // ...
+            });
+
+    }
+
+    async function login(email, password) {
         await signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            console.log("uspjesan login");
-            return true;
-            // ...
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log("neuspjela registracija "+errorMessage);
-            return false;
-        });
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                console.log("uspjesan login");
+                return true;
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log("neuspjela registracija " + errorMessage);
+                return false;
+            });
     }
 
     //dodaje usera u kolekciju /users nakon registracije
@@ -60,7 +88,7 @@ export function AuthProvider({ children }) {
                 email: email
             });
 
-            console.log("user dodan " + docRef);
+            console.log("user dodan");
 
         } catch (error) {
             console.log("greska" + error);
@@ -90,7 +118,8 @@ export function AuthProvider({ children }) {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user);
 
-            console.log(user.uid);
+            if(currentUser != null){console.log(currentUser.uid);}else{console.log("odjavljen")};
+
         });
 
         return unsubscribe;
@@ -103,7 +132,8 @@ export function AuthProvider({ children }) {
         addUser,
         getItems,
         login,
-        items
+        items,
+        loginGoogle
     }
 
     return (
