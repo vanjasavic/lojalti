@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { doc, setDoc, collection, getDocs,getDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, FacebookAuthProvider } from "firebase/auth";
+import { doc, setDoc, collection, getDocs, getDoc } from "firebase/firestore";
 import { auth, db } from '../firebase'
 
 
@@ -15,6 +15,7 @@ export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState()
     const [items, setItems] = useState();
     const provider = new GoogleAuthProvider();
+    const providerFacebook = new FacebookAuthProvider();
 
     /// AUTH METODE//
 
@@ -33,7 +34,7 @@ export function AuthProvider({ children }) {
         }
     }
 
-    //metoda za login putem emaila i passworda
+    //metoda za login putem Googla
 
     async function loginGoogle() {
         await signInWithPopup(auth, provider)
@@ -44,7 +45,7 @@ export function AuthProvider({ children }) {
                 // The signed-in user info.
                 const user = result.user;
                 const name = user.displayName.substring(0, user.displayName.indexOf(' '));
-                addUser(user.email,name,"GOOGLE");
+                addUser(user.email, name, "GOOGLE");
                 // ...
                 console.log("google sign in uspjesno");
                 console.log(result);
@@ -62,6 +63,38 @@ export function AuthProvider({ children }) {
 
     }
 
+    /// metoda za login putem facebooka
+    async function loginFacebook() {
+        await signInWithPopup(auth, providerFacebook)
+            .then((result) => {
+                // The signed-in user info.
+                const user = result.user;
+
+                // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+                const credential = FacebookAuthProvider.credentialFromResult(result);
+                const accessToken = credential.accessToken;
+
+                //addUser(user.email, name, "GOOGLE");
+                // ...
+                console.log("facebook sign in uspjesno");
+                console.log(user);
+                console.log(result);
+            })
+            .catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.email;
+                // The AuthCredential type that was used.
+                const credential = FacebookAuthProvider.credentialFromError(error);
+
+                // ...
+            });
+    }
+
+
+    //metoda za login putem emaila i passworda
     async function login(email, password) {
         await signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
@@ -100,17 +133,17 @@ export function AuthProvider({ children }) {
 
 
     //vraća podatke o useru(name,points itd.)
-    async function getUser(uid){
+    async function getUser(uid) {
         const docRef = doc(db, "users", uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             console.log("Document data:", docSnap.data());
             return docSnap.data();
-          } else {
+        } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
             return false;
-          }
+        }
 
     }
 
@@ -135,7 +168,7 @@ export function AuthProvider({ children }) {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user);
 
-            if(currentUser != null){console.log(currentUser.uid);}else{console.log("odjavljen")};
+            if (currentUser != null) { console.log(currentUser.uid); } else { console.log("odjavljen") };
 
         });
 
@@ -150,7 +183,8 @@ export function AuthProvider({ children }) {
         getItems,
         login,
         items,
-        loginGoogle
+        loginGoogle,
+        loginFacebook
     }
 
     return (

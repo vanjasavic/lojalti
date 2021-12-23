@@ -7,7 +7,7 @@ export default function Login() {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
 
-    const {login,loginGoogle} = useAuth();
+    const {login,loginGoogle,loginFacebook} = useAuth();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -43,7 +43,7 @@ export default function Login() {
             <p className="uk-heading-line uk-text-center"><span>ili</span></p>
 
             <div>
-                <button className="uk-button uk-button-primary uk-align-center uk-border-rounded uk-width-1-1"><span data-uk-icon="facebook"></span> Facebook</button>
+                <button onClick={loginFacebook} className="uk-button uk-button-primary uk-align-center uk-border-rounded uk-width-1-1"><span data-uk-icon="facebook"></span> Facebook</button>
                 <button onClick={loginGoogle} className="uk-button uk-button-default uk-align-center uk-border-rounded uk-width-1-1"><span data-uk-icon="google"></span> Google</button>
                 <p className="uk-text-center">Nemate račun? <span className="uk-text-success">Regstrirajte se</span></p>
             </div>
