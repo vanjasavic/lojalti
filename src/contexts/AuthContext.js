@@ -48,16 +48,13 @@ export function AuthProvider({children}) {
     //METODE ZA ITEME
 
     async function getItems(){
+        let _items = [];
 
-        const _items = [];
         const querySnapshot = await getDocs(collection(db, "items"));
         querySnapshot.forEach((doc) => {
             _items.push(doc.data());
-            console.log(doc.id, " => ", doc.data());
         });
-        //console.log("svi itemi "+_items);
         setItems(_items);
-
     }
 
     /// 
@@ -65,11 +62,12 @@ export function AuthProvider({children}) {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user)=> {
             setCurrentUser(user);
+
             console.log(user.uid);
         });
     
         return unsubscribe;
-    }, [])
+    }, []);
 
 
     const value = {

@@ -1,8 +1,29 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import Nav from './blocks/Nav'
+import { useAuth } from '../contexts/AuthContext'
 import List from './blocks/List'
 
 export default function Home() {
+
+    const {getItems,items} = useAuth();
+
+    const [loading,setLoading ]= useState(true);
+
+    /// uzmi iteme samo jednom kod prvog rendera
+    useEffect(() => {
+        const unsubscribe = getItems();
+    
+        return unsubscribe;
+    }, []);
+
+    useEffect(() => {
+        if(items != null){
+            setLoading(false);
+        }
+        console.log(loading);
+
+    });
+
     return (
         <div>
 
@@ -19,7 +40,9 @@ export default function Home() {
 
             </div>
 
-            <List />
+            
+          
+            {loading ? <p>Loading</p> :<List items={items} />}
 
         </div>
     )
