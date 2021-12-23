@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { doc, setDoc, collection, getDocs } from "firebase/firestore";
+import { doc, setDoc, collection, getDocs,getDoc } from "firebase/firestore";
 import { auth, db } from '../firebase'
 
 
@@ -96,6 +96,23 @@ export function AuthProvider({ children }) {
     }
 
     /// KRAJ AUTH METODE ////
+
+
+
+    //vraća podatke o useru(name,points itd.)
+    async function getUser(uid){
+        const docRef = doc(db, "users", uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            console.log("Document data:", docSnap.data());
+            return docSnap.data();
+          } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+            return false;
+          }
+
+    }
 
 
     //METODE ZA ITEME///
