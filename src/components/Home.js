@@ -2,16 +2,25 @@ import React,{useEffect,useState} from 'react'
 import Nav from './blocks/Nav'
 import { useAuth } from '../contexts/AuthContext'
 import List from './blocks/List'
+import {getItems} from '../api/database'
+
 
 export default function Home() {
 
-    const {getItems,items} = useAuth();
-
+    //const {getItems,items} = useAuth();
+    
+    const [items,setItems] = useState([]);
     const [loading,setLoading ]= useState(true);
 
     /// uzmi iteme samo jednom kod prvog rendera
     useEffect(() => {
-        const unsubscribe = getItems();
+        const unsubscribe = getItems().then((result) => {
+            if(result != false){
+                setItems(result);
+            }else{
+                console.log("error pri dohvacanju itema");
+            }
+        });
     
         return unsubscribe;
     }, []);

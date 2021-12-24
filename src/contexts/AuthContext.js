@@ -13,7 +13,6 @@ export function useAuth() {
 export function AuthProvider({ children }) {
 
     const [currentUser, setCurrentUser] = useState()
-    const [items, setItems] = useState();
     const provider = new GoogleAuthProvider();
     const providerFacebook = new FacebookAuthProvider();
 
@@ -58,9 +57,7 @@ export function AuthProvider({ children }) {
                 const email = error.email;
                 // The AuthCredential type that was used.
                 const credential = GoogleAuthProvider.credentialFromError(error);
-                // ...
             });
-
     }
 
     /// metoda za login putem facebooka
@@ -88,8 +85,6 @@ export function AuthProvider({ children }) {
                 const email = error.email;
                 // The AuthCredential type that was used.
                 const credential = FacebookAuthProvider.credentialFromError(error);
-
-                // ...
             });
     }
 
@@ -120,7 +115,6 @@ export function AuthProvider({ children }) {
                 surname: surname,
                 email: email
             });
-
             console.log("user dodan");
 
         } catch (error) {
@@ -130,11 +124,9 @@ export function AuthProvider({ children }) {
 
     /// KRAJ AUTH METODE ////
 
-
-
     //vraća podatke o useru(name,points itd.)
-    async function getUser(uid) {
-        const docRef = doc(db, "users", uid);
+    async function getUser() {
+        const docRef = doc(db, "users", currentUser.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             console.log("Document data:", docSnap.data());
@@ -144,24 +136,7 @@ export function AuthProvider({ children }) {
             console.log("No such document!");
             return false;
         }
-
     }
-
-
-    //METODE ZA ITEME///
-
-    async function getItems() {
-        let _items = [];
-
-        const querySnapshot = await getDocs(collection(db, "items"));
-        querySnapshot.forEach((doc) => {
-            _items.push(doc.data());
-        });
-        setItems(_items);
-    }
-
-    ///  KRAJ METODA ZA ITEME//
-
 
     // prati promjene da li je user ulogiran ili ne
     useEffect(() => {
@@ -171,8 +146,8 @@ export function AuthProvider({ children }) {
             if (currentUser != null) { console.log(currentUser.uid); } else { console.log("odjavljen") };
 
         });
-
         return unsubscribe;
+
     }, []);
 
 
@@ -180,9 +155,7 @@ export function AuthProvider({ children }) {
         currentUser,
         signUp,
         addUser,
-        getItems,
         login,
-        items,
         loginGoogle,
         loginFacebook
     }
