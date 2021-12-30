@@ -17,6 +17,10 @@ h1, h2, h3 {
   font-family: 'Poppins', sans-serif!important;
 }
 
+.uk-card-border {
+  border-top: 2px solid gray;
+}
+
 .uk-input, .uk-select, .uk-textarea {
   background: #fff;
   color: #666;

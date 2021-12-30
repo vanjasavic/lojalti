@@ -13,15 +13,17 @@ export default function List({ items }) {
     // </a>
 
     var itemList = items.map((item)=>{
-        return <li>{item.name+" ->"+item.price+"kn"}</li>;
+        return <div className="uk-margin-small uk-border-rounded uk-card-border uk-card uk-card-default uk-card-body uk-width-1-2@m">
+            {item.name+" ->"+item.price+"kn"}
+            </div>;
       })
 
     return (
         <div className="uk-container uk-container-xsmall uk-margin-medium">
 
-        <ul>
+        <div>
             {itemList}
-        </ul>
+        </div>
 
         </div>
     )
